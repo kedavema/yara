@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Emprendimiento</title>
+</head>
+<body>
+    <form action="" method="POST" enctype="multipart/form-data">
+        <label for="">Sube una imagen</label>
+        <input type="file" name="imagen">
+        <label for="">Nombre de tu Emprendimiento</label>
+        <input type="text" name="nombre">
+        <select name="categoria" id="">
+            <option value="Selecciona un rubro" selected>--- Selecciona un rubro ---</option>
+            {% for categoria in categorias %}
+                <option value="{{ categoria.id }}"> {{ categoria.nombre }}</option>
+            {% endfor %}
+        </select>
+        <label for="">Descripción</label>
+        <input type="text" name="descripcion">
+        <label for="">Whatsapp</label>
+        <input type="text" name="whatsapp">
+        <label for="">Teléfono</label>
+        <input type="text" name="telefono">
+        <label for="">Facebook</label>
+        <input type="text" name="facebook">
+        <label for="">Instagram</label>
+        <input type="text" name="instagram">
+        <label for="">Latitud</label>
+        <input type="number" name="latitud">
+        <label for="">Longitud</label>
+        <input type="number" name="longitud">
+        <button type="submit">Crear</button>
+    </form>
+</body>
+</html>

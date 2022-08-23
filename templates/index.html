@@ -7,6 +7,11 @@
     <title>Yara</title>
 </head>
 <body>
-    <h1> MI primer registro</h1>
+    <h1>Emprendimientos</h1>
+    {% for emp in emprendimientos %}
+        <div>{{ emp.nombre }}</div>
+        <div>{{ emp.imagen }}</div>
+        <img src="/static/emprendimientos/{{ emp.imagen }}" alt="">
+    {% endfor %}
 </body>
 </html>

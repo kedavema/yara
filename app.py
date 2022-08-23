@@ -1,9 +1,10 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_login import current_user, LoginManager, login_manager, login_user, logout_user, login_required
 from config import config
-from models import db, User
+from models import Categoria, db, User, Emprendimiento
 from forms import LoginForm, SignupForm
 import os 
+
 
 def create_app(environment):
     app = Flask(__name__)
@@ -13,7 +14,6 @@ def create_app(environment):
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = "login"
-    
 
     with app.app_context():
         db.init_app(app)
@@ -23,11 +23,16 @@ def create_app(environment):
 environment = "config.DevelopmentConfig"
 app =create_app(environment)
 
+
+# Ruta principal
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    emprendimientos = Emprendimiento.get_all()
+    return render_template("index.html", emprendimientos=emprendimientos)
 
+
+# Ruta para el registro de las emprendedoras
 @app.route("/signup", methods = ["POST", "GET"])
 def signup ():
     # si el usuario ya esta registrado se lo redirige al inicio
@@ -51,6 +56,8 @@ def signup ():
 def load_user(user_id):
     return User.get_by_id((user_id))
 
+
+# Ruta para el login
 @app.route("/login", methods = ["POST", "GET"])
 def login ():
     if current_user.is_authenticated:
@@ -66,13 +73,40 @@ def login ():
         
     return render_template("login.html", form=form)
 
+
+# Ruta para logout
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect (url_for("index"))
 
 
+# Ruta para crear un emprendimiento
+@app.route('/crear-emprendimiento', methods = ['GET', 'POST'])
+def registros():
+    if request.method == 'POST':
+        user_id = current_user.id
+        imagen = request.files['imagen']
+        filename = imagen.filename
+        nombre = request.form['nombre']
+        categoria_id = request.form['categoria']
+        descripcion = request.form['descripcion']
+        whatsapp = request.form['whatsapp']
+        telefono = request.form['telefono']
+        facebook = request.form['facebook']
+        instagram = request.form['instagram']
+        latitud = request.form['latitud']
+        longitud = request.form['longitud']
+        
+        Emprendimiento.create(user_id, filename, nombre, categoria_id, descripcion, whatsapp, telefono, facebook, instagram, latitud, longitud)
+        imagen.save(f"static/emprendimientos/{filename}")
+        return redirect(url_for('index')) #mientras redireccionamos al index donde luego listaremos todos los emprendimientos
+    categorias = Categoria.get_all()
+    return render_template("crear_emprendimiento.html", categorias=categorias)
 
 
-
-
+# Ruta para listar los emprendimientos
+@app.route('/emprendimientos')
+def emprendimientos():
+    emprendimiento = Emprendimiento.query.all() 
+    return render_template('emprendimientos.html, emprendimientos = emprendimientos')
