@@ -24,7 +24,7 @@ environment = "config.DevelopmentConfig"
 app =create_app(environment)
 
 @app.route("/")
-@login_required
+#@login_required
 def index():
     return render_template("index.html")
 
