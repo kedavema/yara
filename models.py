@@ -31,11 +31,11 @@ class User(db.Model, UserMixin):
 
     @staticmethod
     def get_by_ci(ci):
-        return User.query.filter_by(ci = ci). first()
+        return User.query.filter_by(ci = ci).first()
 
     @staticmethod
     def get_by_id(id):
-        return User.query.filter_by(id = id). first()
+        return User.query.filter_by(id = id).first()
 
     @staticmethod
     def get_all():
@@ -79,6 +79,10 @@ class Emprendimiento(db.Model):
         if not self.id:
             db.session.add(self)
         db.session.commit()
+
+    @staticmethod
+    def get_by_id(id):
+        return Emprendimiento.query.filter_by(id = id).first()
 
     @staticmethod
     def get_all():

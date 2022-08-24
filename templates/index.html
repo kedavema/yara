@@ -14,30 +14,39 @@
 
 <body class="" style="background-color: #edbaa9;">
     <!-- ========== { HEADER }==========  -->
-  <header class="fixed top-0 left-0 right-0 z-50">
-    <nav class="" style="background-color: #400101;">
-       <div class="xl:container mx-auto px-3 sm:px-4 xl:px-2">
-         <div class="flex justify-between">
-            <div class="mx-w-10 flex items-center"> 
-             <img class="absolute top-0 left-0 block w-3/8 h-full" src="{{ url_for('static', filename = 'Logo_sinfondo_nuevo.png')}}" alt="Logotipo yara">
-           </div>
-           <div class="flex flex-row">
-             <ul class="navbar hidden lg:flex lg:flex-row text-gray-100 text-sm items-center font-bold">
-               <li class="active relative border-l border-gray-800 hover:text-rose-600">
-                 <a class="block py-3 px-6 border-b-2 border-transparent" href="index.html">Inicio</a>
-               </li>
-               <li class="relative border-l border-gray-800 hover:text-rose-600">
-                 <a class="block py-3 px-6 border-b-2 border-transparent" href="#">Ingresar</a>
-               </li>
-               <li class="relative border-l border-gray-800 hover:text-rose-600">
-                 <a class="block py-3 px-6 border-b-2 border-transparent" href="#">Registrarse</a>
-               </li>
-             </ul>
+    <header class="fixed top-0 left-0 right-0 z-50">
+      <nav class="" style="background-color: #400101;">
+         <div class="xl:container mx-auto px-3 sm:px-4 xl:px-2">
+           <div class="flex justify-between">
+              <div class="mx-w-10 flex items-center"> 
+               <img class="absolute top-0 left-0 block w-3/8 h-full" src="{{ url_for('static', filename = 'Logo_sinfondo_nuevo.png')}}" alt="Logotipo yara">
+             </div>
+             <div class="flex flex-row">
+               <ul class="navbar hidden lg:flex lg:flex-row text-gray-100 text-sm items-center font-bold">
+                 <li class="active relative border-l border-gray-800 hover:text-rose-600">
+                   <a class="block py-3 px-6 border-b-2 border-transparent" href="{{ url_for('index') }}">Inicio</a>
+                 </li>
+                 {% if current_user.is_authenticated %}
+                 <li class="relative border-l border-gray-800 hover:text-rose-600">
+                  <a class="block py-3 px-6 border-b-2 border-transparent" href="{{ url_for('mis_emprendimientos') }}">Mis Emprendimientos</a>
+                 </li>
+                 <li class="relative border-l border-gray-800 hover:text-rose-600">
+                  <a class="block py-3 px-6 border-b-2 border-transparent" href="{{ url_for('logout') }}">Salir</a>
+                </li>
+                 {% else %}
+                 <li class="relative border-l border-gray-800 hover:text-rose-600">
+                   <a class="block py-3 px-6 border-b-2 border-transparent" href="{{ url_for('login') }}">Ingresar</a>
+                 </li>
+                 <li class="relative border-l border-gray-800 hover:text-rose-600">
+                   <a class="block py-3 px-6 border-b-2 border-transparent" href="{{ url_for('signup') }}">Registrarse</a>
+                 </li>
+                 {% endif %}
+               </ul>
+             </div>
            </div>
          </div>
-       </div>
-    </nav>
- </header>            
+      </nav>
+    </header>                
     <img class="mt-10" src="{{ url_for('static', filename = 'logo_nuevolargo.png')}}" alt="Workflow">
     <div class="text-center pb-10"> 
         <p class= "text-3xl italic pb-3 pt-10">Somos YARA</p> 
@@ -51,7 +60,7 @@
             Queremos incentivar y fortalecer tus emprendimientos, ayudarte a encontrar trabajo, alcanzar tus logros y cumplir tus sueños.
         </p> 
         <p class= "text-1xl pt-1 mx-22 mb-10">Nacimos para conectar oportunidades, porque todas queremos y merecemos una vida digna.</p>
-        <a href="#" class="bg-rose-400 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-full pt-4 pb-4">
+        <a href="{{ url_for('todos_los_emprendimientos') }}" class="bg-rose-400 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-full pt-4 pb-4">
             Ver Emprendimientos
         </a>
     </div>

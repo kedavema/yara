@@ -24,40 +24,29 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="text-gray-700 pt-9 sm:pt-10">
- <!-- ========== { HEADER }==========  -->
- <header class="fixed top-0 left-0 right-0 z-50">
-  <nav class="" style="background-color: #400101;">
-     <div class="xl:container mx-auto px-3 sm:px-4 xl:px-2">
-       <div class="flex justify-between">
-          <div class="mx-w-10 flex items-center"> 
-           <img class="absolute top-0 left-0 block w-3/8 h-full" src="{{ url_for('static', filename = 'Logo_sinfondo_nuevo.png')}}" alt="Logotipo yara">
+    
+    <!-- ========== { HEADER }==========  -->
+    <header class="fixed top-0 left-0 right-0 z-50">
+      <nav class="" style="background-color: #400101;">
+         <div class="xl:container mx-auto px-3 sm:px-4 xl:px-2">
+           <div class="flex justify-between">
+              <div class="mx-w-10 flex items-center"> 
+               <img class="absolute top-0 left-0 block w-3/8 h-full" src="{{ url_for('static', filename = 'Logo_sinfondo_nuevo.png')}}" alt="Logotipo yara">
+             </div>
+             <div class="flex flex-row">
+               <ul class="navbar hidden lg:flex lg:flex-row text-gray-100 text-sm items-center font-bold">
+                 <li class="active relative border-l border-gray-800 hover:text-rose-600">
+                   <a class="block py-3 px-6 border-b-2 border-transparent" href="{{ url_for('index') }}">Inicio</a>
+                 </li>
+                 <li class="relative border-l border-gray-800 hover:text-rose-600">
+                  <a class="block py-3 px-6 border-b-2 border-transparent" href="{{ url_for('logout') }}">Salir</a>
+                </li>
+               </ul>
+             </div>
+           </div>
          </div>
-         <div class="flex flex-row">
-           <ul class="navbar hidden lg:flex lg:flex-row text-gray-100 text-sm items-center font-bold">
-             <li class="active relative border-l border-gray-800 hover:text-rose-600">
-               <a class="block py-3 px-6 border-b-2 border-transparent" href="{{ url_for('index') }}">Inicio</a>
-             </li>
-             {% if current_user.is_authenticated %}
-             <li class="relative border-l border-gray-800 hover:text-rose-600">
-              <a class="block py-3 px-6 border-b-2 border-transparent" href="{{ url_for('mis_emprendimientos') }}">Mis Emprendimientos</a>
-             </li>
-             <li class="relative border-l border-gray-800 hover:text-rose-600">
-              <a class="block py-3 px-6 border-b-2 border-transparent" href="{{ url_for('logout') }}">Salir</a>
-            </li>
-             {% else %}
-             <li class="relative border-l border-gray-800 hover:text-rose-600">
-               <a class="block py-3 px-6 border-b-2 border-transparent" href="{{ url_for('login') }}">Ingresar</a>
-             </li>
-             <li class="relative border-l border-gray-800 hover:text-rose-600">
-               <a class="block py-3 px-6 border-b-2 border-transparent" href="{{ url_for('signup') }}">Registrarse</a>
-             </li>
-             {% endif %}
-           </ul>
-         </div>
-       </div>
-     </div>
-  </nav>
-</header>           
+      </nav>
+    </header>   
     <!-- =========={ MAIN }==========  -->
     <main id="content">
       <div
@@ -76,7 +65,14 @@
                   <h2
                     class="text-white font-bold text-shadow-black text-4xl text-center"
                   >
-                    <span class="inline-block h-5 mr-2 text-black">Emprendimientos</span>
+                    <a href="{{ url_for('crear_emprendimiento') }}"">
+                      <button
+                        type="submit"
+                        class="mx-auto rounded py-5 flex items-center py-3 px-5 leading-5 text-white bg-rose-400 hover:text-white hover:bg-rose-600 hover:ring-0 focus:outline-none focus:ring-0"
+                      >
+                        Crear emprendimiento
+                      </button>
+                    </a>
                   </h2>
                 </div>
               </div>
@@ -84,62 +80,59 @@
           </div>
         </div>
       </div>
-      <div class="bg-white p-6">
+      <div class="bg-white py-6">
         <div class="xl:container mx-auto px-3 sm:px-4 xl:px-2">
           <div class="flex flex-row flex-wrap">
             <div class="flex-shrink max-w-full w-full overflow-hidden">
-              <div class="flex flex-row flex-wrap -mx-3">
-                <div class="grid grid-cols-4 gap-4">
-                  {% for emprendimiento in emprendimientos %}
+              <div class="grid grid-cols-4 gap-4">
+                {% for emprendimiento in emprendimientos %}
                   <!-- Card del emprendimiento -->
                   <div
-                  class="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md"
-                >
-                  <a href="#">
-                    <img
-                      class="rounded-t-lg"
-                      src="/static/emprendimientos/{{ emprendimiento.imagen }}"
-                      alt=""
-                      style="min-height: 300px;display: inline-block;"
-                    />
-                  </a>
-                  <div class="p-5">
+                    class="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md"
+                  >
                     <a href="#">
-                      <h5
-                        class="mb-2 text-2xl font-bold tracking-tight text-gray-900"
-                      >
-                        {{ emprendimiento.nombre }}
-                      </h5>
+                      <img
+                        class="rounded-t-lg"
+                        src="/static/emprendimientos/{{ emprendimiento.imagen }}"
+                        alt=""
+                      />
                     </a>
-                    <p
-                      class="mb-3 font-normal text-gray-700 dark:text-gray-400"
-                    >
-                      {{ emprendimiento.descripcion }}
-                    </p>
-                    <a
-                      href="{{ url_for('detalle_emprendimiento', emprendimiento_id=emprendimiento.id) }}"
-                      class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-rose-400 rounded-lg hover:bg-rose-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
-                    >
-                      Ver mas
-                      <svg
-                        aria-hidden="true"
-                        class="ml-2 -mr-1 w-4 h-4"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
+                    <div class="p-5">
+                      <a href="#">
+                        <h5
+                          class="mb-2 text-2xl font-bold tracking-tight text-gray-900"
+                        >
+                          {{ emprendimiento.nombre }}
+                        </h5>
+                      </a>
+                      <p
+                        class="mb-3 font-normal text-gray-700 dark:text-gray-400"
                       >
-                        <path
-                          fill-rule="evenodd"
-                          d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                          clip-rule="evenodd"
-                        ></path>
-                      </svg>
-                    </a>
+                        {{ emprendimiento.descripcion }}
+                      </p>
+                      <a
+                        href="{{ url_for('detalle_emprendimiento', emprendimiento_id=emprendimiento.id) }}"
+                        class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-rose-400 rounded-lg hover:bg-rose-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                      >
+                        Ver mas
+                        <svg
+                          aria-hidden="true"
+                          class="ml-2 -mr-1 w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                      </a>
+                    </div>
                   </div>
-                </div>
-                <!-- END: Card del emprendimiento -->
-                {% endfor %}
-                </div>
+                  <!-- END: Card del emprendimiento -->
+                  {% endfor %}
               </div>
             </div>
           </div>
@@ -181,43 +174,10 @@
   </div>
 </footer>
 
-    <!-- =========={ SCROLL TO TOP }==========  -->
-    <a
-      href="#"
-      class="back-top fixed p-4 rounded bg-gray-100 border border-gray-100 text-gray-500 dark:bg-gray-900 dark:border-gray-800 right-4 bottom-4 hidden"
-      aria-label="Scroll To Top"
-    >
-      <svg
-        width="1rem"
-        height="1rem"
-        viewBox="0 0 16 16"
-        fill="currentColor"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M8 3.5a.5.5 0 01.5.5v9a.5.5 0 01-1 0V4a.5.5 0 01.5-.5z"
-          clip-rule="evenodd"
-        ></path>
-        <path
-          fill-rule="evenodd"
-          d="M7.646 2.646a.5.5 0 01.708 0l3 3a.5.5 0 01-.708.708L8 3.707 5.354 6.354a.5.5 0 11-.708-.708l3-3z"
-          clip-rule="evenodd"
-        ></path>
-      </svg>
-    </a>
-
-    <!--Vendor js-->
     <script src="src/vendors/hc-sticky/dist/hc-sticky.js"></script>
     <script src="src/vendors/glightbox/dist/js/glightbox.min.js"></script>
     <script src="src/vendors/@splidejs/splide/dist/js/splide.min.js"></script>
     <script src="src/vendors/@splidejs/splide-extension-video/dist/js/splide-extension-video.min.js"></script>
-
-    <!-- Start development js -->
     <script src="src/js/theme.js"></script>
-    <!-- End development js -->
-
-    <!-- Production js -->
-    <!-- <script src="dist/js/scripts.js"></script> -->
   </body>
 </html>
